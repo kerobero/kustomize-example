@@ -62,7 +62,7 @@ jobs:
         context: ./
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app-poc:${{ github.sha }}    
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/app-poc:${{ github.sha }},${{ secrets.DOCKER_HUB_USERNAME }}/app-poc:latest
   kustomize:
     needs: docker
     name: 'Kustomize'
