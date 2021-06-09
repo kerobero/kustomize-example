@@ -1,5 +1,7 @@
 package com.example.actuatorservice;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,15 @@ public class HelloWorldController {
 	@GetMapping("/healthz")
 	@ResponseBody
 	public String healthz() {
+		return "OK";
+	}
+
+	@GetMapping("/file")
+	@ResponseBody
+	public String createFile(@RequestParam(name="name") String name) throws IOException {
+		File newFile = new File(name);
+		boolean success_create = newFile.createNewFile();
+		boolean success_delete = newFile.delete();
 		return "OK";
 	}
 }

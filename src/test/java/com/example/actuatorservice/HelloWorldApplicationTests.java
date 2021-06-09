@@ -15,6 +15,8 @@
  */
 package com.example.actuatorservice;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Basic integration tests for service demo application.
@@ -36,8 +39,10 @@ import static org.assertj.core.api.BDDAssertions.then;
  * @author Dave Syer
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = {"management.port=0"})
+@TestPropertySource(properties = { "management.port=0" })
 public class HelloWorldApplicationTests {
+
+	private final String FILE_NAME = "fileToCreate.txt";
 
 	@LocalServerPort
 	private int port;
@@ -51,8 +56,8 @@ public class HelloWorldApplicationTests {
 	@Test
 	public void shouldReturn200WhenSendingRequestToController() throws Exception {
 		@SuppressWarnings("rawtypes")
-		ResponseEntity<Map> entity = this.testRestTemplate.getForEntity(
-				"http://localhost:" + this.port + "/hello-world", Map.class);
+		ResponseEntity<Map> entity = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.port + "/hello-world", Map.class);
 
 		then(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
@@ -60,10 +65,19 @@ public class HelloWorldApplicationTests {
 	@Test
 	public void shouldReturn200WhenSendingRequestToManagementEndpoint() throws Exception {
 		@SuppressWarnings("rawtypes")
-		ResponseEntity<Map> entity = this.testRestTemplate.getForEntity(
-				"http://localhost:" + this.mgt + "/actuator/info", Map.class);
+		ResponseEntity<Map> entity = this.testRestTemplate
+				.getForEntity("http://localhost:" + this.mgt + "/actuator/info", Map.class);
 
 		then(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
+
+	@Test
+	public void givenUsingFile_whenCreatingFile_thenCorrect() throws IOException {
+		File newFile = new File(FILE_NAME);
+		boolean success_create = newFile.createNewFile();
+		boolean success_delete = newFile.delete();
+		assertTrue(success_create);
+		assertTrue(success_delete);
 	}
 
 }
