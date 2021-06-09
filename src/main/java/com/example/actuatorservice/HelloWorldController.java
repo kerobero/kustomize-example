@@ -29,10 +29,14 @@ public class HelloWorldController {
 
 	@GetMapping("/file")
 	@ResponseBody
-	public String createFile(@RequestParam(name="name") String name) throws IOException {
+	public String createFile(@RequestParam(name="name") String name) {
 		File newFile = new File(name);
-		boolean success_create = newFile.createNewFile();
-		boolean success_delete = newFile.delete();
+		try {
+			boolean success_create = newFile.createNewFile();
+			boolean success_delete = newFile.delete();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return "OK";
 	}
 }
