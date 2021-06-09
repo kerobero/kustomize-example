@@ -30,13 +30,14 @@ public class HelloWorldController {
 	@GetMapping("/file")
 	@ResponseBody
 	public String createFile(@RequestParam(name="name") String name) {
-		File newFile = new File(name);
+		File newFile = new File("/tmp/"+name);
 		try {
 			boolean success_create = newFile.createNewFile();
 			boolean success_delete = newFile.delete();
+			return "OK";
 		} catch (IOException e) {
 			e.printStackTrace();
+			return "FAIL";
 		}
-		return "OK";
 	}
 }
