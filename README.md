@@ -1,1 +1,1 @@
-# kustomize-example
+# Kustomize-example
